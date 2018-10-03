@@ -1,0 +1,8 @@
+
+function work() {
+
+}
+
+work.sync = () => {
+
+};

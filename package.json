@@ -1,0 +1,16 @@
+{
+  "name": "ts-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "reflect-metadata": "^0.1.12",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.1"
+  }
+}
