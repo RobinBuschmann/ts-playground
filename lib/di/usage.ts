@@ -1,7 +1,12 @@
-import {Container, Injectable} from './di';
+import {Container, Inject, Injectable} from './di';
+
+const Config = Symbol('Config');
+const UtilConfig = Symbol('UtilConfig');
 
 @Injectable
 class UtilService {
+    constructor(@Inject(UtilConfig) private config) {
+    }
 
 }
 
@@ -11,9 +16,9 @@ class UserService {
     }
 }
 
-const Config = Symbol('Config');
 
 const container = new Container([
+    {provide: UtilConfig, useValue: {usePromises: true}},
     {provide: Config, useValue: {a: 1}, multi: true},
     {provide: Config, useValue: {b: 2}, multi: true},
     {provide: UtilService, useClass: UtilService},

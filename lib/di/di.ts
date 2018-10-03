@@ -1,19 +1,28 @@
 import 'reflect-metadata';
 
+const INJECT_TOKENS_METADATA_KEY = 'di:param_tokens';
+
 interface Provider {
     getDependentTokens();
     getValue(dependencies);
 }
 
 export const Injectable = t => null;
-// TODO Implement possibility to inject via tokens
-export const Inject = token => target => null;
+export const Inject = token => (target, key, index) => {
+    const tokens = Reflect.getMetadata(INJECT_TOKENS_METADATA_KEY, target);
+    Reflect.defineMetadata(INJECT_TOKENS_METADATA_KEY, {
+        [index]: token,
+        ...tokens,
+    }, target)
+};
 
 export class ClassProvider implements Provider {
     constructor(private options) {
     }
     getDependentTokens() {
-        return Reflect.getMetadata('design:paramtypes', this.options.useClass) || [];
+        const tokens = Reflect.getMetadata(INJECT_TOKENS_METADATA_KEY, this.options.useClass) || {};
+        return (Reflect.getMetadata('design:paramtypes', this.options.useClass) || [])
+            .map((token, index) => index in tokens ? tokens[index] : token);
     }
     getValue(dependencies: any[]) {
         return new this.options.useClass(...dependencies);
